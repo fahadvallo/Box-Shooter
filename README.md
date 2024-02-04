@@ -2,8 +2,8 @@
 2D platformer webgame created using javascript.
 
 Controls: 
-          A = Move to left.
+          A = Move to left. 
           D = Move to right. 
-          Spacebar = Jump.
-          Mouse.LeftClick = Shoot on Cursor.
+          Spacebar = Jump. 
+          Mouse.LeftClick = Shoot on Cursor. 
 
