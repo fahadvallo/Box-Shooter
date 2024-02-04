@@ -66,6 +66,22 @@
             transform: translate(-50%, -50%);
             color: white;
         }
+
+        #settingsContainer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            display: none;
+        }
+
+        #settingsContainer label {
+            display: block;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -73,6 +89,20 @@
         <canvas id="gameCanvas" width="800" height="600"></canvas>
         <div id="scoreContainer">Player: 0 | Enemy: 0</div>
         <div id="healthBars"></div>
+        <button onclick="showSettings()">Settings</button>
+    </div>
+
+    <div id="settingsContainer">
+        <label for="playerSpeed">Player Speed:</label>
+        <input type="range" id="playerSpeed" min="1" max="10" value="5">
+
+        <label for="enemySpeed">Enemy Speed:</label>
+        <input type="range" id="enemySpeed" min="1" max="10" value="2">
+
+        <label for="bulletSpeed">Bullet Speed:</label>
+        <input type="range" id="bulletSpeed" min="1" max="20" value="8">
+
+        <button onclick="applySettings()">Apply Settings</button>
     </div>
 
     <script>
@@ -82,6 +112,7 @@
         const gameContainer = document.getElementById('gameContainer');
         const scoreContainer = document.getElementById('scoreContainer');
         const healthBarsContainer = document.getElementById('healthBars');
+        const settingsContainer = document.getElementById('settingsContainer');
 
         const player = {
             x: 50,
@@ -528,6 +559,32 @@
                 mouse.leftClick = false;
             }
         });
+
+        function showSettings() {
+            settingsContainer.style.display = 'block';
+        }
+
+        function applySettings() {
+            player.speed = parseInt(document.getElementById('playerSpeed').value);
+            enemy.speed = parseInt(document.getElementById('enemySpeed').value);
+            const newBulletSpeed = parseInt(document.getElementById('bulletSpeed').value);
+
+            // Update existing bullets with the new speed
+            bullets.forEach(bullet => {
+                const angle = Math.atan2(bullet.speedY, bullet.speedX);
+                bullet.speedX = Math.cos(angle) * newBulletSpeed;
+                bullet.speedY = Math.sin(angle) * newBulletSpeed;
+            });
+
+            // Update enemy bullets with the new speed
+            enemyBullets.forEach(bullet => {
+                const angle = Math.atan2(bullet.speedY, bullet.speedX);
+                bullet.speedX = Math.cos(angle) * newBulletSpeed;
+                bullet.speedY = Math.sin(angle) * newBulletSpeed;
+            });
+
+            settingsContainer.style.display = 'none';
+        }
 
         // Start the game loop
         update();
